@@ -1,0 +1,87 @@
+
+{
+  "entities": {
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Store's additional user information",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "avatar": { "type": "string" },
+        "upiId": { "type": "string" }
+      },
+      "required": ["uid", "name", "email"]
+    },
+    "Group": {
+      "title": "Group",
+      "description": "A group of roommates",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "memberIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      },
+      "required": ["name", "memberIds"]
+    },
+    "Bill": {
+      "title": "Bill",
+      "description": "An expense shared by the group",
+      "type": "object",
+      "properties": {
+        "title": { "type": "string" },
+        "totalAmount": { "type": "number" },
+        "category": { "type": "string" },
+        "dueDate": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "splits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "userId": { "type": "string" },
+              "amount": { "type": "number" }
+            }
+          }
+        },
+        "isRecurring": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      }
+    },
+    "Settlement": {
+      "title": "Settlement",
+      "description": "A payment made between users",
+      "type": "object",
+      "properties": {
+        "fromId": { "type": "string" },
+        "toId": { "type": "string" },
+        "amount": { "type": "number" },
+        "date": { "type": "string" }
+      }
+    }
+  },
+  "auth": {
+    "providers": ["google.com", "password"]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profiles"
+    },
+    "/groups/{groupId}": {
+      "schema": "Group",
+      "description": "Roommate groups"
+    },
+    "/groups/{groupId}/bills/{billId}": {
+      "schema": "Bill",
+      "description": "Expenses in a group"
+    },
+    "/groups/{groupId}/settlements/{settlementId}": {
+      "schema": "Settlement",
+      "description": "Payments made between roommates"
+    }
+  }
+}
